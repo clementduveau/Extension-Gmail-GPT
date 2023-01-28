@@ -1,4 +1,2 @@
-/_locales
-/assets
-/manifest.json
-/src
+.DS_Store
+*/.DS_Store
