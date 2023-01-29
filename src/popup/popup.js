@@ -1,4 +1,22 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // https://stackoverflow.com/a/25612056/6371582
+    var objects = document.getElementsByTagName('html');
+    for (var j = 0; j < objects.length; j++)
+    {
+        var obj = objects[j];
+
+        var valStrH = obj.innerHTML.toString();
+        var valNewH = valStrH.replace(/__MSG_(\w+)__/g, function(match, v1)
+        {
+            return v1 ? chrome.i18n.getMessage(v1) : "";
+        });
+
+        if(valNewH != valStrH)
+        {
+            obj.innerHTML = valNewH;
+        }
+    }
+    
     var links = document.getElementsByTagName("a");
     for (var i = 0; i < links.length; i++) {
         (function () {
@@ -10,8 +28,6 @@ document.addEventListener('DOMContentLoaded', function () {
         })();
     }
 });
-
-// check content validity
 
 document.getElementById('updater').addEventListener('submit', async function (event) {
     event.preventDefault();
@@ -40,10 +56,10 @@ document.getElementById('updater').addEventListener('submit', async function (ev
         }, function () {
             button.classList.add('secondary');
             button.removeAttribute('aria-busy');
-            button.innerText = "Mis à jour !";
+            button.innerText = chrome.i18n.getMessage('popupUpdateSuccess');
             setTimeout(() => {
                 button.classList.remove('secondary');
-                button.innerText = "Mettre à jour";
+                button.innerText = chrome.i18n.getMessage('popupUpdate');
             }, 2000);
         });
     } else {
@@ -51,12 +67,12 @@ document.getElementById('updater').addEventListener('submit', async function (ev
         button.classList.add('secondary');
         button.removeAttribute('aria-busy');
         button.setAttribute('style', 'background-color: #f4511e');
-        button.innerText = "Clé invalide !";
+        button.innerText = chrome.i18n.getMessage('popupUpdateFail');
         setTimeout(() => {
             button.classList.remove('secondary');
             button.removeAttribute('style');
             button.removeAttribute('style');
-            button.innerText = "Mettre à jour";
+            button.innerText = chrome.i18n.getMessage('popupUpdate');
         }, 2000);
     }
 })

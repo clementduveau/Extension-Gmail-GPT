@@ -1,1 +1,34 @@
-{}
+{
+    "answerWithGPT": {
+        "message": "Répondre avec GPT",
+        "description": "Normal button content"
+    },
+    "notConfigured": {
+        "message": "Configurez GPT",
+        "description": "No API Key button content"
+    },
+    "instructions": {
+        "message": "Ecrit une réponse à cet email, en reprenant point par point les attentes de l'interlocuteur.\nEmail: \"\"\"",
+        "description": "Instructions for GPT. Using the same language helps the model to not be confuse in which language it should answer"
+    },
+    "popupFindIt": {
+        "message": "Trouvez-la sur",
+        "description": "Beginning of sentence about where to find API Key"
+    },
+    "popupFindItLink": {
+        "message": "votre espace OpenAI",
+        "description": "End of the sentence about where to find API Key"
+    },
+    "popupUpdate": {
+        "message": "Mettre à jour",
+        "description": "Normal update button content"
+    },
+    "popupUpdateSuccess": {
+        "message": "Mis à jour !",
+        "description": "Success update button content"
+    },
+    "popupUpdateFail": {
+        "message": "Clé invalide !",
+        "description": "Fail update button content"
+    }
+}

@@ -47,16 +47,31 @@
                 <label for="apiKey">
                     API Key
                     <input type="password" id="apiKey" name="apiKey" placeholder="API Key" required>
-                    <small>Trouvez-la sur <a href="https://beta.openai.com/account/api-keys">votre espace
-                            OpenAI</a></small>
+                    <small>__MSG_popupFindIt__ <a
+                            href="https://beta.openai.com/account/api-keys">__MSG_popupFindItLink__</a></small>
                 </label>
             </div>
 
             <!-- Button -->
-            <button id="submit" type="submit">Mettre à jour</button>
+            <button id="submit" type="submit">__MSG_popupUpdate__</button>
 
         </form>
     </main>
+    <script>
+        var objects = document.getElementsByTagName('html');
+        for (var j = 0; j < objects.length; j++) {
+            var obj = objects[j];
+
+            var valStrH = obj.innerHTML.toString();
+            var valNewH = valStrH.replace(/__MSG_(\w+)__/g, function (match, v1) {
+                return v1 ? chrome.i18n.getMessage(v1) : "";
+            });
+
+            if (valNewH != valStrH) {
+                obj.innerHTML = valNewH;
+            }
+        }
+    </script>
     <script src="popup.js"></script>
 </body>
 

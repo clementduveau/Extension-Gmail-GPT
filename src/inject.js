@@ -21,7 +21,7 @@ chrome.storage.sync.get({
 
 chrome.storage.onChanged.addListener(function(changes, namespace) {
 	apiKey = changes.apiKey;
-	chrome.tabs.reload(); // Maybe just refresh buttons.
+	chrome.tabs.reload(); // Maybe just refresh buttons in future version ?
 });
 
 let actionLineObserver = new MutationObserver(mutations => {
@@ -59,7 +59,7 @@ function addActionButton(node) {
 	let button = document.createElement('span');
 
 	button.className = (apiKey === null ? 'ams gpt-button disabled' : 'ams gpt-button normal');
-	button.innerText = (apiKey === null ? 'GPT non-configuré' : 'Répondre avec GPT'); // i18n everywhere ?
+	button.innerText = (apiKey === null ? chrome.i18n.getMessage('notConfigured') : chrome.i18n.getMessage('answerWithGPT')); // i18n everywhere ?
 
 	node.prepend(button);
 
@@ -79,7 +79,7 @@ function buttonClick(button) {
 	button.classList.replace('normal', 'loading');
 	button.prepend(loader)
 
-	let instructions = 'Ecrit une réponse à cet email, en reprenant point par point les attentes de l\'interlocuteur.\nEmail: """'
+	let prompt = chrome.i18n.getMessage('instructions') + text + '\n"""';
 	let text = htmlToPlainText(document.querySelector(SELECTOR_PREV_EMAIL_CONTENT).innerHTML);
 
 	// Handle errors !
@@ -92,7 +92,7 @@ function buttonClick(button) {
 		},
 		body: JSON.stringify({
 			model: 'text-davinci-003',
-			prompt: instructions + text + '\n"""',
+			prompt: prompt,
 			temperature: MODEL_TEMPERATURE,
 			max_tokens: MODEL_MAX_TOKENS
 		})

@@ -4,8 +4,8 @@
   "version_name": "0.1",
   "manifest_version": 3,
   "description": "Cette extension propose de répondre à vos emails avec DaVinci 3 d'OpenAI",
-  "homepage_url": "http://extensionizr.com",
-  "default_locale": "fr",
+  "homepage_url": "https://github.com/clementduveau/Extension-Gmail-GPT",
+  "default_locale": "en",
   "icons": {
     "16": "assets/icons/GmailGPT16.png",
     "48": "assets/icons/GmailGPT48.png",
@@ -15,7 +15,6 @@
     "default_popup": "src/popup/popup.html"
   },
   "permissions": [
-    "https://mail.google.com/*",
     "storage",
     "tabs"
   ],
