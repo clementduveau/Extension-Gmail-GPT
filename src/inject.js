@@ -79,8 +79,7 @@ function buttonClick(button) {
 	button.classList.replace('normal', 'loading');
 	button.prepend(loader)
 
-	let prompt = chrome.i18n.getMessage('instructions') + text + '\n"""';
-	let text = htmlToPlainText(document.querySelector(SELECTOR_PREV_EMAIL_CONTENT).innerHTML);
+	let prompt = chrome.i18n.getMessage('instructions') + htmlToPlainText(document.querySelector(SELECTOR_PREV_EMAIL_CONTENT).innerHTML) + '\n"""';
 
 	// Handle errors !
 	let answer = '';
@@ -124,14 +123,19 @@ function buttonClick(button) {
 			});
 		}
 		waitForElm(SELECTOR_MAIN_EDITABLE).then(() => {
-			answer = answer.substring(2); // GPT starts with two escapes that are useless
+			// refactorGPTAnswer
+			answer = answer.substring(1); // GPT starts with at least one escapes
 			answer = answer.replace(new RegExp('\r?\n','g'), '<br />');
 			document.querySelector(SELECTOR_MAIN_EDITABLE).insertAdjacentHTML('afterbegin', answer);
 		})
 	});
 }
 
-
+function refactorGPTAnswer(text){
+	// Delete firsts escape lines with regex, sometimes one, sometimes two lines
+	// Remove [Votre nom] if found at the end
+	// Replace \n with <br />. See Regex already used
+}
 
 /*
 FROM https://github.com/EDMdesigner/textversionjs
