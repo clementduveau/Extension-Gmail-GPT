@@ -27,16 +27,21 @@ for (var i = 0; i < links.length; i++) {
     })();
 }
 
-document.getElementById('updater').addEventListener('submit', async function (event) {
+chrome.storage.sync.get({ model: 'text-davinci-003' }, function(keys) {
+    document.getElementById('model').value = keys.model;
+});
+
+document.getElementById('apiUpdater').addEventListener('submit', async function (event) {
     event.preventDefault();
     let button = document.getElementById('submit');
-    let apiKey = document.getElementById('apiKey').value;
-
+    let apiKeyInput = document.getElementById('apiKey');
+    let apiKey = apiKeyInput.value;
+    
     button.setAttribute('aria-busy', 'true');
 
     let result;
     try {
-        result = await fetch('https://api.openai.com/v1/models/text-davinci-003', {
+        result = await fetch('https://api.openai.com/v1/models', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -44,33 +49,49 @@ document.getElementById('updater').addEventListener('submit', async function (ev
             }
         });
     } catch (error) {
-        console.log("Invalid key");
         console.log(error);
     }
-
+    
     if (result?.ok) {
         chrome.storage.sync.set({
             apiKey: apiKey
         }, function () {
+            apiKeyInput.setAttribute('aria-invalid','false');
             button.classList.add('secondary');
             button.removeAttribute('aria-busy');
             button.innerText = chrome.i18n.getMessage('popupUpdateSuccess');
             setTimeout(() => {
                 button.classList.remove('secondary');
+                apiKeyInput.removeAttribute('aria-invalid');
                 button.innerText = chrome.i18n.getMessage('popupUpdate');
             }, 2000);
         });
     } else {
         console.log(result);
+        apiKeyInput.setAttribute('aria-invalid','true');
         button.classList.add('secondary');
         button.removeAttribute('aria-busy');
         button.setAttribute('style', 'background-color: #f4511e');
         button.innerText = chrome.i18n.getMessage('popupUpdateFail');
         setTimeout(() => {
+            apiKeyInput.removeAttribute('aria-invalid');
             button.classList.remove('secondary');
-            button.removeAttribute('style');
             button.removeAttribute('style');
             button.innerText = chrome.i18n.getMessage('popupUpdate');
         }, 2000);
     }
+});
+
+document.getElementById('model').addEventListener('change', function (event) {
+    let selectedModelInput = document.getElementById('model');
+    let selectedModel = selectedModelInput.value;
+
+    chrome.storage.sync.set({
+        model: selectedModel
+    }, function() {
+        selectedModelInput.setAttribute('aria-invalid', 'false');
+        setTimeout(() => {
+            selectedModelInput.removeAttribute('aria-invalid');
+        }, 2000);
+    });
 })

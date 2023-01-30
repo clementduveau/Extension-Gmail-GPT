@@ -30,5 +30,13 @@
     "popupUpdateFail": {
         "message": "Clé invalide !",
         "description": "Fail update button content"
+    },
+    "popupModelLabel": {
+        "message": "Modèle d'IA",
+        "description": "Label for GPT model selector"
+    },
+    "popupChooseModel": {
+        "message": "DaVinci > Curie > Babbage pour leurs capacités, mais Babbage > Curie > DaVinci pour le prix et la vitesse. Essayez-les.",
+        "description": "Label for GPT model selector"
     }
 }

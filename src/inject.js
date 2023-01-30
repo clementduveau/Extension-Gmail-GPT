@@ -10,18 +10,23 @@ const RETRY_TIMEOUT_MS = 500;
 
 const MODEL_TEMPERATURE = 0.3;
 const MODEL_MAX_TOKENS = 500; // As a variable ? 35 tokens are like a sentence, maybe something like "how many sentences max ? Around 14 sentences cost 0,01 $"
+// WARNING, prompt AND completions are billed. Reading a long email is expensive.
 
 let apiKey = null;
+let model = 'text-davinci-003';
 
 chrome.storage.sync.get({
-	apiKey: null
+	apiKey: null,
+	model: 'text-davinci-003'
 }, function(keys) {
 	apiKey = keys.apiKey;
+	model = keys.model;
 });
 
 chrome.storage.onChanged.addListener(function(changes, namespace) {
 	apiKey = changes.apiKey;
-	chrome.tabs.reload(); // Maybe just refresh buttons in future version ?
+	model = changes.model;
+	//chrome.tabs.reload(); // Maybe just refresh buttons in future version ?
 });
 
 let actionLineObserver = new MutationObserver(mutations => {
@@ -90,7 +95,7 @@ function buttonClick(button) {
 			'Authorization': 'Bearer ' + apiKey,
 		},
 		body: JSON.stringify({
-			model: 'text-davinci-003',
+			model: model,
 			prompt: prompt,
 			temperature: MODEL_TEMPERATURE,
 			max_tokens: MODEL_MAX_TOKENS

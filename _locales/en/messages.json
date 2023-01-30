@@ -30,5 +30,13 @@
   "popupUpdateFail": {
     "message": "Invalid key !",
     "description": "Fail update button content"
+  },
+  "popupModelLabel": {
+      "message": "AI model",
+      "description": "Label for GPT model selector"
+  },
+  "popupChooseModel": {
+      "message": "DaVinci > Curie > Babbage for capabilities, but Babbage > Curie > DaVinci for price and speed. Try them.",
+      "description": "Label for GPT model selector"
   }
 }

@@ -42,7 +42,7 @@
 
 <body>
     <main class="container">
-        <form id="updater">
+        <form id="apiUpdater">
             <div class="grid">
                 <label for="apiKey">
                     API Key
@@ -50,11 +50,21 @@
                     <small>__MSG_popupFindIt__ <a
                             href="https://beta.openai.com/account/api-keys">__MSG_popupFindItLink__</a></small>
                 </label>
+                <!-- Button -->
+                <button id="submit" type="submit">__MSG_popupUpdate__</button>
             </div>
-
-            <!-- Button -->
-            <button id="submit" type="submit">__MSG_popupUpdate__</button>
-
+        </form>
+        <form id="modelUpdater">
+            <div class="grid">
+                <label for="model">__MSG_popupModelLabel__
+                    <select id="model" required>
+                        <option value="text-davinci-003" selected>DaVinci 3</option>
+                        <option value="text-curie-001">Curie</option>
+                        <option value="text-babbage-001">Babbage</option>
+                    </select>
+                    <small>__MSG_popupChooseModel__</small>
+                </label>
+            </div>
         </form>
     </main>
     <script src="popup.js"></script>
