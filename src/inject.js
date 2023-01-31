@@ -18,12 +18,12 @@ let model = 'text-davinci-003';
 chrome.storage.sync.get({
 	apiKey: null,
 	model: 'text-davinci-003'
-}, function(keys) {
+}, function (keys) {
 	apiKey = keys.apiKey;
 	model = keys.model;
 });
 
-chrome.storage.onChanged.addListener(function(changes, namespace) {
+chrome.storage.onChanged.addListener(function (changes, namespace) {
 	apiKey = changes.apiKey;
 	model = changes.model;
 	//chrome.tabs.reload(); // Maybe just refresh buttons in future version ?
@@ -71,7 +71,7 @@ function addActionButton(node) {
 	button.onclick = function () { buttonClick(button); }
 }
 
-function buttonClick(button) {
+async function buttonClick(button) {
 	if (apiKey === null) { // Make a background script to open popup https://stackoverflow.com/questions/5544256/how-to-programmatically-open-a-chrome-extension-popup-window-from-background-htm
 		return;
 	}
@@ -86,41 +86,45 @@ function buttonClick(button) {
 
 	let prompt = chrome.i18n.getMessage('instructions') + htmlToPlainText(document.querySelector(SELECTOR_PREV_EMAIL_CONTENT).innerHTML) + '\n"""';
 
-	// Handle errors !
-	let answer = '';
-	fetch('https://api.openai.com/v1/completions', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			'Authorization': 'Bearer ' + apiKey,
-		},
-		body: JSON.stringify({
-			model: model,
-			prompt: prompt,
-			temperature: MODEL_TEMPERATURE,
-			max_tokens: MODEL_MAX_TOKENS
-		})
-	}).then(function (response) {
-		return response.json();
-	}).then(function (result) {
-		answer = result.choices[0].text;
+	let result;
+	try {
+		result = await (await fetch('https://api.openai.com/v1/completions', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + apiKey,
+			},
+			body: JSON.stringify({
+				model: model,
+				prompt: prompt,
+				temperature: MODEL_TEMPERATURE,
+				max_tokens: MODEL_MAX_TOKENS
+			})
+			
+		})).json();
+	} catch (error) {
+		console.log(error);
+	}
+	
+	if (result?.choices) {
+		let answer = result.choices[0].text;
 
 		let replyButton = (document.querySelector(SELECTOR_REPLY_ALL) ? document.querySelector(SELECTOR_REPLY_ALL) : document.querySelector(SELECTOR_REPLY_BUTTON));
 		replyButton.click();
-	
+
 		function waitForElm(selector) {
 			return new Promise(resolve => {
 				if (document.querySelector(selector)) {
 					return resolve(document.querySelector(selector));
 				}
-	
+
 				const observer = new MutationObserver(mutations => {
 					if (document.querySelector(selector)) {
 						resolve(document.querySelector(selector));
 						observer.disconnect();
 					}
 				});
-	
+
 				observer.observe(document.body, {
 					childList: true,
 					subtree: true
@@ -130,15 +134,22 @@ function buttonClick(button) {
 		waitForElm(SELECTOR_MAIN_EDITABLE).then(() => {
 			// refactorGPTAnswer
 			answer = answer.substring(1); // GPT starts with at least one escapes
-			answer = answer.replace(new RegExp('\r?\n','g'), '<br />');
+			answer = answer.replace(new RegExp('\r?\n', 'g'), '<br />');
 			document.querySelector(SELECTOR_MAIN_EDITABLE).insertAdjacentHTML('afterbegin', answer);
 		})
-	});
+	} else {
+		// display error
+		button.querySelector('div.lds-ring').remove();
+		button.classList.replace('loading', 'disabled');
+		button.innerText = "Error in completion";
+		button.onclick = function () { buttonClick(button); }
+
+	}
 }
 
-function refactorGPTAnswer(text){
+function refactorGPTAnswer(text) {
 	// Delete firsts escape lines with regex, sometimes one, sometimes two lines
-	// Remove [Votre nom] if found at the end
+	// Remove [Votre nom] / [Your name] if found at the end
 	// Replace \n with <br />. See Regex already used
 }
 
