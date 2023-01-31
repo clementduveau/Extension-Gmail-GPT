@@ -11,6 +11,7 @@ const RETRY_TIMEOUT_MS = 500;
 const MODEL_TEMPERATURE = 0.3;
 const MODEL_MAX_TOKENS = 500; // As a variable ? 35 tokens are like a sentence, maybe something like "how many sentences max ? Around 14 sentences cost 0,01 $"
 // WARNING, prompt AND completions are billed. Reading a long email is expensive.
+// Models are limited in tokens: Davinci accepts 4096, and the others accept 2048
 
 let apiKey = null;
 let model = 'text-davinci-003';
@@ -24,8 +25,8 @@ chrome.storage.sync.get({
 });
 
 chrome.storage.onChanged.addListener(function (changes, namespace) {
-	apiKey = changes.apiKey;
-	model = changes.model;
+	apiKey = changes.apiKey.newValue;
+	model = changes.model.newValue;
 	//chrome.tabs.reload(); // Maybe just refresh buttons in future version ?
 });
 
@@ -64,7 +65,7 @@ function addActionButton(node) {
 	let button = document.createElement('span');
 
 	button.className = (apiKey === null ? 'ams gpt-button disabled' : 'ams gpt-button normal');
-	button.innerText = (apiKey === null ? chrome.i18n.getMessage('notConfigured') : chrome.i18n.getMessage('answerWithGPT')); // i18n everywhere ?
+	button.innerText = (apiKey === null ? chrome.i18n.getMessage('notConfigured') : chrome.i18n.getMessage('answerWithGPT'));
 
 	node.prepend(button);
 
@@ -88,7 +89,7 @@ async function buttonClick(button) {
 
 	let result;
 	try {
-		result = await (await fetch('https://api.openai.com/v1/completions', {
+		result = await (await fetch('https://api.openai.com/v1/completions', { // Streaming would be smooth too but more difficult to handle
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -98,14 +99,14 @@ async function buttonClick(button) {
 				model: model,
 				prompt: prompt,
 				temperature: MODEL_TEMPERATURE,
-				max_tokens: MODEL_MAX_TOKENS
+				max_tokens: MODEL_MAX_TOKENS // OpenAI API check current tokens + max tokens and if it is greater than the accepted max for models, it just throw an error. A tokenizer would be great to just check that it is not too much
 			})
-			
+
 		})).json();
 	} catch (error) {
 		console.log(error);
 	}
-	
+
 	if (result?.choices) {
 		let answer = result.choices[0].text;
 
@@ -139,9 +140,9 @@ async function buttonClick(button) {
 		})
 	} else {
 		// display error
-		button.querySelector('div.lds-ring').remove();
+		document.querySelector('div.lds-ring').remove(); // Not tested
 		button.classList.replace('loading', 'disabled');
-		button.innerText = "Error in completion";
+		button.innerText = (result.error.code === null ? "Error in completion" : result.error.code);
 		button.onclick = function () { buttonClick(button); }
 
 	}
