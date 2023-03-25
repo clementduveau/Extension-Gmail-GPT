@@ -1,7 +1,7 @@
 {
   "name": "Gmail GPT Assistant",
-  "version": "0.1",
-  "version_name": "0.1",
+  "version": "0.2",
+  "version_name": "0.2",
   "manifest_version": 3,
   "description": "Cette extension propose de répondre à vos emails avec DaVinci 3 d'OpenAI",
   "homepage_url": "https://github.com/clementduveau/Extension-Gmail-GPT",
