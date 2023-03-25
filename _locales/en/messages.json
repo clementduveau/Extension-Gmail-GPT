@@ -8,7 +8,7 @@
     "description": "No API Key button content"
   },
   "instructions": {
-    "message": "Write a reply to this email. Answer to it step by step .\nEmail: \"\"\"",
+    "message": "Write a reply to this email in the same language as the email. Respond to each point in the email step by step.\nEmail: \"\"\"",
     "description": "Instructions for GPT. Using the same language helps the model to not be confuse in which language it should answer"
   },
   "popupFindIt": {
