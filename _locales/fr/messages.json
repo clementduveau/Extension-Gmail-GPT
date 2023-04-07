@@ -1,42 +1,66 @@
 {
-    "answerWithGPT": {
-        "message": "Répondre avec GPT",
-        "description": "Normal button content"
-    },
-    "notConfigured": {
-        "message": "Configurez GPT",
-        "description": "No API Key button content"
-    },
-    "instructions": {
-        "message": "Ecrit une réponse à cet email, en reprenant point par point les attentes de l'interlocuteur.\nEmail: \"\"\"",
-        "description": "Instructions for GPT. Using the same language helps the model to not be confuse in which language it should answer"
-    },
-    "popupFindIt": {
-        "message": "Trouvez-la sur",
-        "description": "Beginning of sentence about where to find API Key"
-    },
-    "popupFindItLink": {
-        "message": "votre espace OpenAI",
-        "description": "End of the sentence about where to find API Key"
-    },
-    "popupUpdate": {
-        "message": "Mettre à jour",
-        "description": "Normal update button content"
-    },
-    "popupUpdateSuccess": {
-        "message": "Mis à jour !",
-        "description": "Success update button content"
-    },
-    "popupUpdateFail": {
-        "message": "Clé invalide !",
-        "description": "Fail update button content"
-    },
-    "popupModelLabel": {
-        "message": "Modèle d'IA",
-        "description": "Label for GPT model selector"
-    },
-    "popupChooseModel": {
-        "message": "DaVinci > Curie > Babbage pour leurs capacités, mais Babbage > Curie > DaVinci pour le prix et la vitesse. Essayez-les.",
-        "description": "Label for GPT model selector"
+  "answerWithGPT": {
+    "message": "Répondre avec GPT",
+    "description": "Normal button content"
+  },
+  "notConfigured": {
+    "message": "Configurez GPT",
+    "description": "No API Key button content"
+  },
+  "instructions": {
+    "message": "Ecrit une réponse à cet email, en reprenant point par point les attentes de l'interlocuteur.\nEmail: \"\"\"$email$\"\"\"",
+    "description": "Instructions for GPT. Using the same language helps the model to not be confuse in which language it should answer",
+    "placeholders": {
+      "email": {
+        "content": "$1",
+        "example": "Salut, comment vas-tu ?"
+      }
     }
+  },
+  "instructionsWithSummary": {
+    "message": "Ecrit une réponse à cet email, en reprenant point par point les attentes de l'interlocuteur.\nLa réponse doit contenir les informations suivantes: $summary$\nEmail: \"\"\"$email$\"\"\"",
+    "description": "Instructions for GPT. Using the same language helps the model to not be confuse in which language it should answer",
+    "placeholders": {
+      "email": {
+        "content": "$1",
+        "example": "Salut, comment vas-tu ?"
+      },
+      "summary": {
+        "content": "$2",
+        "example": "je suis d'accord"
+      }
+    }
+  },
+  "popupFindIt": {
+    "message": "Trouvez-la sur",
+    "description": "Beginning of sentence about where to find API Key"
+  },
+  "popupFindItLink": {
+    "message": "votre espace OpenAI",
+    "description": "End of the sentence about where to find API Key"
+  },
+  "popupUpdate": {
+    "message": "Mettre à jour",
+    "description": "Normal update button content"
+  },
+  "popupUpdateSuccess": {
+    "message": "Mis à jour !",
+    "description": "Success update button content"
+  },
+  "popupUpdateFail": {
+    "message": "Clé invalide !",
+    "description": "Fail update button content"
+  },
+  "popupModelLabel": {
+    "message": "Modèle d'IA",
+    "description": "Label for GPT model selector"
+  },
+  "popupChooseModel": {
+    "message": "DaVinci > Curie > Babbage pour leurs capacités, mais Babbage > Curie > DaVinci pour le prix et la vitesse. Essayez-les.",
+    "description": "Label for GPT model selector"
+  },
+  "replySummaryPrompt": {
+    "message": "Resumé de la réponse:",
+    "description": "Instructions pour le résumé de la réponse"
+  }
 }

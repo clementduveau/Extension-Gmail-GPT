@@ -8,8 +8,28 @@
     "description": "No API Key button content"
   },
   "instructions": {
-    "message": "Write a reply to this email in the same language as the email. Respond to each point in the email step by step.\nEmail: \"\"\"",
-    "description": "Instructions for GPT. Using the same language helps the model to not be confuse in which language it should answer"
+    "message": "Write a reply to this email in the same language as the email. Respond to each point in the email step by step.\nEmail: \"\"\"$email$\"\"\"",
+    "description": "Instructions for GPT. Using the same language helps the model to not be confuse in which language it should answer",
+    "placeholders": {
+      "email": {
+        "content": "$1",
+        "example": "Hi, how are you?"
+      }
+    }
+  },
+  "instructionsWithSummary": {
+    "message": "Write a reply to the following email in the same language as the email.\nThe reply should contain the following information: $summary$\nEmail: \"\"\"$email$\"\"\"",
+    "description": "Instructions for GPT. Using the same language helps the model to not be confuse in which language it should answer",
+    "placeholders": {
+      "email": {
+        "content": "$1",
+        "example": "Hi, how are you?"
+      },
+      "summary": {
+        "content": "$2",
+        "example": "I agree"
+      }
+    }
   },
   "popupFindIt": {
     "message": "Find it on",
@@ -38,5 +58,9 @@
   "popupChooseModel": {
       "message": "DaVinci > Curie > Babbage for capabilities, but Babbage > Curie > DaVinci for price and speed. Try them.",
       "description": "Label for GPT model selector"
+  },
+  "replySummaryPrompt": {
+    "message": "Summary of the reply:",
+    "description": "Prompt for the summary of the reply"
   }
 }

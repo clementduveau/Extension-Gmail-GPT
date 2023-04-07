@@ -85,7 +85,17 @@ async function buttonClick(button) {
 	button.classList.replace('normal', 'loading');
 	button.prepend(loader)
 
-	let prompt = chrome.i18n.getMessage('instructions') + htmlToPlainText(document.querySelector(SELECTOR_PREV_EMAIL_CONTENT).innerHTML) + '\n"""';
+  let emailContent = htmlToPlainText(document.querySelector(SELECTOR_PREV_EMAIL_CONTENT).innerHTML);
+
+  // Ask for a summary from the user
+  let replySummary = window.prompt(chrome.i18n.getMessage('replySummaryPrompt'));
+
+  let prompt;
+  if (replySummary) { // User provided a summary for the reply.
+    prompt = chrome.i18n.getMessage('instructionsWithSummary', [emailContent, replySummary])
+  } else { // User did NOT provide a summary for the reply.
+    prompt = chrome.i18n.getMessage('instructions', [emailContent])
+  }
 
 	let result;
 	try {
